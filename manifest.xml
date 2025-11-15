@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" xsi:type="MailApp">
+  <Id>12006248-2610-4a9c-9739-b219a0559d1a</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Contoso</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Contoso Meeting Add-in"/>
+  <Description DefaultValue="Add Contoso meeting details to your appointments."/>
+  <IconUrl DefaultValue="https://localhost:3000/assets/icon-64.png"/>
+  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-128.png"/>
+  <SupportUrl DefaultValue="https://www.contoso.com/help"/>
+  <AppDomains>
+    <AppDomain>https://www.contoso.com</AppDomain>
+  </AppDomains>
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.1"/>
+    </Sets>
+  </Requirements>
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://localhost:3000/taskpane.html"/>
+        <RequestedHeight>250</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  <Permissions>ReadWriteItem</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+      <Description resid="residDescription"></Description>
+      <Requirements>
+        <bt:Sets>
+          <bt:Set Name="Mailbox" MinVersion="1.3"/>
+        </bt:Sets>
+      </Requirements>
+      <Hosts>
+        <Host xsi:type="MailHost">
+          <DesktopFormFactor>
+            <FunctionFile resid="residFunctionFile"/>
+            <!-- Dropdown Menu for Calendar/Appointment Organizer -->
+            <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
+              <OfficeTab id="TabDefault">
+                <Group id="apptComposeGroup">
+                  <Label resid="residDescription"/>
+                  <Control xsi:type="Menu" id="contosoMenuAppointment">
+                    <Label resid="residLabel"/>
+                    <Supertip>
+                      <Title resid="residLabel"/>
+                      <Description resid="residTooltip"/>
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="icon-16"/>
+                      <bt:Image size="32" resid="icon-32"/>
+                      <bt:Image size="64" resid="icon-64"/>
+                      <bt:Image size="80" resid="icon-80"/>
+                    </Icon>
+                    <Items>
+                      <Item id="addMeetingItemAppt">
+                        <Label resid="addMeetingLabel"/>
+                        <Supertip>
+                          <Title resid="addMeetingLabel"/>
+                          <Description resid="addMeetingDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>insertContosoMeeting</FunctionName>
+                        </Action>
+                      </Item>
+                      <Item id="showTaskpaneItemAppt">
+                        <Label resid="showTaskpaneLabel"/>
+                        <Supertip>
+                          <Title resid="showTaskpaneLabel"/>
+                          <Description resid="showTaskpaneDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ShowTaskpane">
+                          <SourceLocation resid="residTaskpaneUrl"/>
+                        </Action>
+                      </Item>
+                      <Item id="settingsItemAppt">
+                        <Label resid="settingsLabel"/>
+                        <Supertip>
+                          <Title resid="settingsLabel"/>
+                          <Description resid="settingsDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>openSettings</FunctionName>
+                        </Action>
+                      </Item>
+                    </Items>
+                  </Control>
+                </Group>
+              </OfficeTab>
+            </ExtensionPoint>
+            <!-- Dropdown Menu for Calendar/Appointment Attendee (viewing events) -->
+            <ExtensionPoint xsi:type="AppointmentAttendeeCommandSurface">
+              <OfficeTab id="TabDefault">
+                <Group id="apptAttendeeGroup">
+                  <Label resid="residDescription"/>
+                  <Control xsi:type="Menu" id="contosoMenuAttendee">
+                    <Label resid="residLabel"/>
+                    <Supertip>
+                      <Title resid="residLabel"/>
+                      <Description resid="residTooltip"/>
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="icon-16"/>
+                      <bt:Image size="32" resid="icon-32"/>
+                      <bt:Image size="64" resid="icon-64"/>
+                      <bt:Image size="80" resid="icon-80"/>
+                    </Icon>
+                    <Items>
+                      <Item id="addMeetingItemAttendee">
+                        <Label resid="addMeetingLabel"/>
+                        <Supertip>
+                          <Title resid="addMeetingLabel"/>
+                          <Description resid="addMeetingDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>insertContosoMeeting</FunctionName>
+                        </Action>
+                      </Item>
+                      <Item id="showTaskpaneItemAttendee">
+                        <Label resid="showTaskpaneLabel"/>
+                        <Supertip>
+                          <Title resid="showTaskpaneLabel"/>
+                          <Description resid="showTaskpaneDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ShowTaskpane">
+                          <SourceLocation resid="residTaskpaneUrl"/>
+                        </Action>
+                      </Item>
+                      <Item id="settingsItemAttendee">
+                        <Label resid="settingsLabel"/>
+                        <Supertip>
+                          <Title resid="settingsLabel"/>
+                          <Description resid="settingsDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>openSettings</FunctionName>
+                        </Action>
+                      </Item>
+                    </Items>
+                  </Control>
+                </Group>
+              </OfficeTab>
+            </ExtensionPoint>
+            <!-- Dropdown Menu for Message Compose (New Email) -->
+            <ExtensionPoint xsi:type="MessageComposeCommandSurface">
+              <OfficeTab id="TabDefault">
+                <Group id="msgComposeGroup">
+                  <Label resid="residDescription"/>
+                  <Control xsi:type="Menu" id="contosoMenuCompose">
+                    <Label resid="residLabel"/>
+                    <Supertip>
+                      <Title resid="residLabel"/>
+                      <Description resid="residTooltip"/>
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="icon-16"/>
+                      <bt:Image size="32" resid="icon-32"/>
+                      <bt:Image size="64" resid="icon-64"/>
+                      <bt:Image size="80" resid="icon-80"/>
+                    </Icon>
+                    <Items>
+                      <Item id="addMeetingItem">
+                        <Label resid="addMeetingLabel"/>
+                        <Supertip>
+                          <Title resid="addMeetingLabel"/>
+                          <Description resid="addMeetingDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>insertContosoMeeting</FunctionName>
+                        </Action>
+                      </Item>
+                      <Item id="showTaskpaneItem">
+                        <Label resid="showTaskpaneLabel"/>
+                        <Supertip>
+                          <Title resid="showTaskpaneLabel"/>
+                          <Description resid="showTaskpaneDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ShowTaskpane">
+                          <SourceLocation resid="residTaskpaneUrl"/>
+                        </Action>
+                      </Item>
+                      <Item id="settingsItem">
+                        <Label resid="settingsLabel"/>
+                        <Supertip>
+                          <Title resid="settingsLabel"/>
+                          <Description resid="settingsDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>openSettings</FunctionName>
+                        </Action>
+                      </Item>
+                    </Items>
+                  </Control>
+                </Group>
+              </OfficeTab>
+            </ExtensionPoint>
+            <!-- Dropdown Menu for Message Read (Reading Email) -->
+            <ExtensionPoint xsi:type="MessageReadCommandSurface">
+              <OfficeTab id="TabDefault">
+                <Group id="msgReadGroup">
+                  <Label resid="residDescription"/>
+                  <Control xsi:type="Menu" id="contosoMenuRead">
+                    <Label resid="residLabel"/>
+                    <Supertip>
+                      <Title resid="residLabel"/>
+                      <Description resid="residTooltip"/>
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="icon-16"/>
+                      <bt:Image size="32" resid="icon-32"/>
+                      <bt:Image size="64" resid="icon-64"/>
+                      <bt:Image size="80" resid="icon-80"/>
+                    </Icon>
+                    <Items>
+                      <Item id="addMeetingItemRead">
+                        <Label resid="addMeetingLabel"/>
+                        <Supertip>
+                          <Title resid="addMeetingLabel"/>
+                          <Description resid="addMeetingDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>insertContosoMeeting</FunctionName>
+                        </Action>
+                      </Item>
+                      <Item id="showTaskpaneItemRead">
+                        <Label resid="showTaskpaneLabel"/>
+                        <Supertip>
+                          <Title resid="showTaskpaneLabel"/>
+                          <Description resid="showTaskpaneDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ShowTaskpane">
+                          <SourceLocation resid="residTaskpaneUrl"/>
+                        </Action>
+                      </Item>
+                      <Item id="settingsItemRead">
+                        <Label resid="settingsLabel"/>
+                        <Supertip>
+                          <Title resid="settingsLabel"/>
+                          <Description resid="settingsDesc"/>
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="icon-16"/>
+                          <bt:Image size="32" resid="icon-32"/>
+                          <bt:Image size="64" resid="icon-64"/>
+                          <bt:Image size="80" resid="icon-80"/>
+                        </Icon>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>openSettings</FunctionName>
+                        </Action>
+                      </Item>
+                    </Items>
+                  </Control>
+                </Group>
+              </OfficeTab>
+            </ExtensionPoint>
+          </DesktopFormFactor>
+        </Host>
+      </Hosts>
+      <Resources>
+        <bt:Images>
+          <bt:Image id="icon-16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
+          <bt:Image id="icon-32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+          <bt:Image id="icon-48" DefaultValue="https://localhost:3000/assets/icon-48.png"/>
+          <bt:Image id="icon-64" DefaultValue="https://localhost:3000/assets/icon-64.png"/>
+          <bt:Image id="icon-80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+        </bt:Images>
+        <bt:Urls>
+          <bt:Url id="residFunctionFile" DefaultValue="https://localhost:3000/commands.html"/>
+          <bt:Url id="residTaskpaneUrl" DefaultValue="https://localhost:3000/taskpane.html"/>
+          <bt:Url id="residAppPageUrl" DefaultValue="https://localhost:3000/app.html"/>
+        </bt:Urls>
+        <bt:ShortStrings>
+          <bt:String id="residDescription" DefaultValue="Contoso Meeting"/>
+          <bt:String id="residLabel" DefaultValue="Contoso Meeting"/>
+          <bt:String id="addMeetingLabel" DefaultValue="Add a Contoso Meeting"/>
+          <bt:String id="showTaskpaneLabel" DefaultValue="Open Contoso Panel"/>
+          <bt:String id="settingsLabel" DefaultValue="Settings"/>
+          <bt:String id="residAppLabel" DefaultValue="Contoso Meeting"/>
+        </bt:ShortStrings>
+        <bt:LongStrings>
+          <bt:String id="residTooltip" DefaultValue="Add a contoso meeting to this appointment."/>
+          <bt:String id="addMeetingDesc" DefaultValue="Add Contoso meeting details to your message or appointment."/>
+          <bt:String id="showTaskpaneDesc" DefaultValue="Open the Contoso meeting panel."/>
+          <bt:String id="settingsDesc" DefaultValue="Configure Contoso meeting settings."/>
+          <bt:String id="residAppDesc" DefaultValue="Open Contoso Meeting app to start or join calls."/>
+        </bt:LongStrings>
+      </Resources>
+    </VersionOverrides>
+  </VersionOverrides>
+</OfficeApp>
