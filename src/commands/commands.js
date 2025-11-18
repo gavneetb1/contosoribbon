@@ -1,10 +1,12 @@
 // 1. How to construct online meeting details.
 // Not shown: How to get the meeting organizer's ID and other details from your service.
+const meetingUrl = "https://contoso.com/meeting?id=123456789";
+
 const newBody = '<div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; border-left: 4px solid #0078d4; margin: 10px 0;">' +
     '<h2 style="color: #0078d4; margin-top: 0; font-size: 18px;">🎥 Join Contoso Meeting</h2>' +
     '<div style="background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">' +
     '<p style="margin: 10px 0;"><strong style="color: #323130;">Meeting Link:</strong></p>' +
-    '<a href="https://contoso.com/meeting?id=123456789" target="_blank" style="display: inline-block; background-color: #0078d4; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 10px 0;">Join Meeting Now</a>' +
+    '<a href="' + meetingUrl + '" target="_blank" style="display: inline-block; background-color: #0078d4; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 10px 0;">Join Meeting Now</a>' +
     '<hr style="border: none; border-top: 1px solid #edebe9; margin: 20px 0;">' +
     '<p style="margin: 10px 0;"><strong style="color: #323130;">📞 Phone Dial-in:</strong> <span style="color: #106ebe; font-weight: bold;">+1 (123) 456-7890</span></p>' +
     '<p style="margin: 10px 0;"><strong style="color: #323130;">🔑 Meeting ID:</strong> <span style="font-family: monospace; background-color: #f3f2f1; padding: 4px 8px; border-radius: 3px;">123 456 789</span></p>' +
@@ -71,10 +73,28 @@ function updateBody(event, existingBody) {
         { asyncContext: event, coercionType: "html" },
         function (setBodyResult) {
             if (setBodyResult.status === Office.AsyncResultStatus.Succeeded) {
-                setBodyResult.asyncContext.completed({ allowEvent: true });
+                // Also set the location field with the meeting URL
+                setLocation(event);
             } else {
                 console.error("Failed to set HTML body.");
                 setBodyResult.asyncContext.completed({ allowEvent: false });
+            }
+        }
+    );
+}
+
+// 4. Set the location field with the meeting URL
+function setLocation(event) {
+    mailboxItem.location.setAsync(meetingUrl,
+        { asyncContext: event },
+        function (setLocationResult) {
+            if (setLocationResult.status === Office.AsyncResultStatus.Succeeded) {
+                console.log("Location set successfully.");
+                setLocationResult.asyncContext.completed({ allowEvent: true });
+            } else {
+                console.error("Failed to set location.");
+                // Still complete the event even if location fails
+                setLocationResult.asyncContext.completed({ allowEvent: true });
             }
         }
     );
